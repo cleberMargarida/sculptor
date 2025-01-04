@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<LangVersion>latest</LangVersion>
+		<OutputType>Library</OutputType>
+		<TargetFrameworks>net7.0;net8.0;net9.0</TargetFrameworks>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Orleans.Server" Version="[7.0.0,)" />
+	</ItemGroup>
+
+	<ItemGroup>
+   <ProjectReference Include="..\Sculptor.Core\Sculptor.Core.csproj" OutputItemType="Analyzer" />
+	</ItemGroup>
+	
+</Project>

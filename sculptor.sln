@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sculptor.Core", "Sculptor.Core\Sculptor.Core.csproj", "{0AE8B221-54F0-4FC6-9781-7C9D68597115}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sculptor.AspNet", "Sculptor.AspNet\Sculptor.AspNet.csproj", "{34509300-4DB9-4FA6-AE0C-F86AB50ACA6D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sculptor.Orleans", "Sculptor.Orleans\Sculptor.Orleans.csproj", "{03F3FB7C-695B-4C65-B3CA-344239EF78C4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0AE8B221-54F0-4FC6-9781-7C9D68597115}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AE8B221-54F0-4FC6-9781-7C9D68597115}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AE8B221-54F0-4FC6-9781-7C9D68597115}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AE8B221-54F0-4FC6-9781-7C9D68597115}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34509300-4DB9-4FA6-AE0C-F86AB50ACA6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34509300-4DB9-4FA6-AE0C-F86AB50ACA6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34509300-4DB9-4FA6-AE0C-F86AB50ACA6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34509300-4DB9-4FA6-AE0C-F86AB50ACA6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03F3FB7C-695B-4C65-B3CA-344239EF78C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03F3FB7C-695B-4C65-B3CA-344239EF78C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03F3FB7C-695B-4C65-B3CA-344239EF78C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03F3FB7C-695B-4C65-B3CA-344239EF78C4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
