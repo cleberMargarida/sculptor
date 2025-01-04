@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sculptor.Core", "src\Sculpt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sculptor.Orleans", "src\Sculptor.Orleans\Sculptor.Orleans.csproj", "{74C3B646-08CA-420E-9772-F41F7DF63023}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{4F5242FC-7ED8-43EE-998A-AB15D29EF503}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sculptor.Tests", "tests\Sculptor.Tests\Sculptor.Tests.csproj", "{80125770-C3BB-4F9D-8B4C-5B86C77884D6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +33,10 @@ Global
 		{74C3B646-08CA-420E-9772-F41F7DF63023}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74C3B646-08CA-420E-9772-F41F7DF63023}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74C3B646-08CA-420E-9772-F41F7DF63023}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80125770-C3BB-4F9D-8B4C-5B86C77884D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80125770-C3BB-4F9D-8B4C-5B86C77884D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80125770-C3BB-4F9D-8B4C-5B86C77884D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80125770-C3BB-4F9D-8B4C-5B86C77884D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,5 +45,6 @@ Global
 		{423D93EF-E741-46F6-9902-C211EA391061} = {273B16C4-C1AD-4D0C-87F2-661DA97997EA}
 		{4702FD87-3888-4703-90E0-45E9FAD1A45E} = {273B16C4-C1AD-4D0C-87F2-661DA97997EA}
 		{74C3B646-08CA-420E-9772-F41F7DF63023} = {273B16C4-C1AD-4D0C-87F2-661DA97997EA}
+		{80125770-C3BB-4F9D-8B4C-5B86C77884D6} = {4F5242FC-7ED8-43EE-998A-AB15D29EF503}
 	EndGlobalSection
 EndGlobal

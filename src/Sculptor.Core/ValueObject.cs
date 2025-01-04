@@ -122,7 +122,7 @@ namespace Sculptor.Core
     }
 
     [Generator()]
-    public class ValueObjectSourceGenerator : IIncrementalGenerator
+    internal class ValueObjectSourceGenerator : IIncrementalGenerator
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
