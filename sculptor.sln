@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sculptor.Core", "Sculptor.Core\Sculptor.Core.csproj", "{0AE8B221-54F0-4FC6-9781-7C9D68597115}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{273B16C4-C1AD-4D0C-87F2-661DA97997EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sculptor.AspNet", "Sculptor.AspNet\Sculptor.AspNet.csproj", "{34509300-4DB9-4FA6-AE0C-F86AB50ACA6D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sculptor.AspNet", "src\Sculptor.AspNet\Sculptor.AspNet.csproj", "{423D93EF-E741-46F6-9902-C211EA391061}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sculptor.Orleans", "Sculptor.Orleans\Sculptor.Orleans.csproj", "{03F3FB7C-695B-4C65-B3CA-344239EF78C4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sculptor.Core", "src\Sculptor.Core\Sculptor.Core.csproj", "{4702FD87-3888-4703-90E0-45E9FAD1A45E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sculptor.Orleans", "src\Sculptor.Orleans\Sculptor.Orleans.csproj", "{74C3B646-08CA-420E-9772-F41F7DF63023}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,20 +17,25 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0AE8B221-54F0-4FC6-9781-7C9D68597115}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0AE8B221-54F0-4FC6-9781-7C9D68597115}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0AE8B221-54F0-4FC6-9781-7C9D68597115}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0AE8B221-54F0-4FC6-9781-7C9D68597115}.Release|Any CPU.Build.0 = Release|Any CPU
-		{34509300-4DB9-4FA6-AE0C-F86AB50ACA6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{34509300-4DB9-4FA6-AE0C-F86AB50ACA6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{34509300-4DB9-4FA6-AE0C-F86AB50ACA6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{34509300-4DB9-4FA6-AE0C-F86AB50ACA6D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{03F3FB7C-695B-4C65-B3CA-344239EF78C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{03F3FB7C-695B-4C65-B3CA-344239EF78C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{03F3FB7C-695B-4C65-B3CA-344239EF78C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{03F3FB7C-695B-4C65-B3CA-344239EF78C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{423D93EF-E741-46F6-9902-C211EA391061}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{423D93EF-E741-46F6-9902-C211EA391061}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{423D93EF-E741-46F6-9902-C211EA391061}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{423D93EF-E741-46F6-9902-C211EA391061}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4702FD87-3888-4703-90E0-45E9FAD1A45E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4702FD87-3888-4703-90E0-45E9FAD1A45E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4702FD87-3888-4703-90E0-45E9FAD1A45E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4702FD87-3888-4703-90E0-45E9FAD1A45E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74C3B646-08CA-420E-9772-F41F7DF63023}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74C3B646-08CA-420E-9772-F41F7DF63023}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74C3B646-08CA-420E-9772-F41F7DF63023}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74C3B646-08CA-420E-9772-F41F7DF63023}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{423D93EF-E741-46F6-9902-C211EA391061} = {273B16C4-C1AD-4D0C-87F2-661DA97997EA}
+		{4702FD87-3888-4703-90E0-45E9FAD1A45E} = {273B16C4-C1AD-4D0C-87F2-661DA97997EA}
+		{74C3B646-08CA-420E-9772-F41F7DF63023} = {273B16C4-C1AD-4D0C-87F2-661DA97997EA}
 	EndGlobalSection
 EndGlobal

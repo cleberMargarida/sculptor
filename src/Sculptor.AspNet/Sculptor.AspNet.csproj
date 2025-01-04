@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<LangVersion>latest</LangVersion>
+		<OutputType>Library</OutputType>
+		<TargetFrameworks>net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
+		<Nullable>enable</Nullable>
+
+		<!-- NuGet Metadata -->
+		<PackageId>Sculptor.AspNet</PackageId>
+		<Authors>cleberMargarida</Authors>
+		<Description>Design classes to craft apps with end-to-end DDD.</Description>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<RepositoryUrl>https://github.com/cleberMargarida/sculptor</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/cleberMargarida/sculptor</PackageProjectUrl>
+		<DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
+		<Title>Sculptor.AspNet</Title>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+		<PackageReference Include="Nerdbank.GitVersioning" Version="3.6.141">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Sculptor.Core\Sculptor.Core.csproj" OutputItemType="Analyzer" />
+	</ItemGroup>
+
+</Project>
