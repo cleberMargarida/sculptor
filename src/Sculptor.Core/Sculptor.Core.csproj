@@ -8,6 +8,7 @@
 		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 
 		<!-- NuGet Metadata -->
+		<IsPackable>true</IsPackable>
 		<PackageId>Sculptor.Core</PackageId>
 		<Authors>cleberMargarida</Authors>
 		<Description>Design classes to craft apps with end-to-end DDD.</Description>
