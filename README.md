@@ -10,16 +10,16 @@
 </p>
 
 ## Overview
-A lightweight library designed to facilitate Domain-Driven Design (DDD) with rich models. 
-Includes foundational classes like `AggregateRoot`, `RichModel`, `ValueObject`, `Entity`, and `Result` to help structure robust, maintainable, and expressive domain models. 
-Perfect for developers seeking to embrace DDD principles with ease.
+A lightweight library designed to facilitate Domain-Driven Design (DDD). 
+Includes classes like `AggregateRoot`, `RichModel`, `ValueObject`, `Entity`, and `Result` to help structure domain models. 
+For developers seeking to embrace DDD principles with ease.
 
 It supports multiple .NET versions including .NET Core 2.1, .NET Core 3.1, .NET 5, .NET 6, .NET 7, .NET 8, and .NET 9.
 
 ## Features
-- Easy-to-use API for DDD modeling
-- Source generator for value objects equality, hash code
-- Support for ServiceProvider anywhere in the domain model
+- Easy-to-use
+- Source generators (No reflection)
+- Support for ServiceProvider anywhere
 
 ## Getting Started
 
@@ -42,9 +42,11 @@ of the `ServiceProviderAccessor` class to the `RequestServices` of the current `
 This enables access to the dependency injection container for the current HTTP request within 
 domain classes such as `AggregateRoot`, `Entity`, and `ValueObject` through the `Services` property.
 
-By leveraging this approach, you can access domain services from anywhere within your domain model, 
-enabling the creation of rich, expressive models while ensuring that business rules are maintained 
-consistently within the domain.
+By this, you can access domain services from anywhere within your domain model, 
+enabling the creation of rich models while ensuring that business rules are maintained 
+within the core business.
+
+### Sample
 
 #### `BankAccount` Class
 
@@ -177,11 +179,6 @@ To set the service provider without relying on built-in mechanisms, like in `Bac
 ```csharp
 ServiceProviderAccessor.ServiceProvider = context.RequestServices;
 ```
-
-### Key Features of the Code
-- **Domain Classes**: `AggregateRoot`, `Entity` and `ValueObjects`. These base classes provide foundational behaviors.
-- **ServiceProvider**: The `Create` method in `BankAccount` uses `IServiceProvider` to access the `DbContext` to check if an account for the provided `owner` already exists.
-- **Result Pattern**: The `Result<BankAccount>` pattern is used instead of exceptions. The `Create` method returns either a success result (`Result.Ok`) or a failure result (`Result.Fail`), making it easier to handle errors in the domain model.
 
 ## License
 Sculptor is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.

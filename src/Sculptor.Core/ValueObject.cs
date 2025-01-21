@@ -241,6 +241,9 @@ namespace Sculptor.Core
         }
     }
 
+    /// <summary>
+    /// Specifies that a property or field should be ignored when calculating the hash code for source generator.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public class HashIgnore : Attribute
     {

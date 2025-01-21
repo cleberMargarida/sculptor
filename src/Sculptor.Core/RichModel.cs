@@ -16,6 +16,9 @@ namespace Sculptor.Core
             ?? throw new NullReferenceException("Sculptor had not configured the ServiceProvider. Please ensure that the ServiceProvider is properly set up before accessing it.");
     }
 
+    /// <summary>
+    /// Provides access to the current <see cref="IServiceProvider"/>.
+    /// </summary>
     public static class ServiceProviderAccessor
     {
         private static readonly AsyncLocal<ServiceProviderHolder> _serviceProviderCurrent = new();

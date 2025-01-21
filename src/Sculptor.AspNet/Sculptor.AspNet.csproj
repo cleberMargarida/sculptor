@@ -25,14 +25,9 @@
 
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-		<PackageReference Include="Nerdbank.GitVersioning" Version="3.6.141">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Sculptor.Core\Sculptor.Core.csproj" OutputItemType="Analyzer" />
+	  <PackageReference Include="Sculptor.Core" Version="0.0.0-g0ee4796a47" />
 	</ItemGroup>
-
 </Project>

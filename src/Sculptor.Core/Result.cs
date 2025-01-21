@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace Sculptor.Core
@@ -192,11 +191,19 @@ namespace Sculptor.Core
             return false;
         }
 
+        /// <summary>
+        /// Implicitly converts a result of type <typeparamref name="T"/> to a non-generic result.
+        /// </summary>
+        /// <param name="result">The result to convert.</param>
         public static implicit operator Result(Result<T> result)
         {
             return new(result.IsSuccess, result.Error, result.Value);
         }
 
+        /// <summary>
+        /// Implicitly converts a non-generic result to a result of type <typeparamref name="T"/>.
+        /// </summary>
+        /// <param name="result">The result to convert.</param>
         public static implicit operator Result<T>(Result result)
         {
             return new(result.IsSuccess, result.Error, (T?)result.value);
@@ -244,7 +251,7 @@ namespace Sculptor.Core
 
     internal class ObjectPool<T>(Func<T> createInstance, Action<T>? resetInstance) where T : class
     {
-        private readonly ConcurrentBag<T> _items = [];
+        private readonly ConcurrentBag<T> _items = new();
 
         public T Get()
         {
