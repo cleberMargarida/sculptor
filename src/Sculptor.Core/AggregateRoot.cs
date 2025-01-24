@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Sculptor.Core
 {
@@ -6,9 +9,12 @@ namespace Sculptor.Core
     /// Represents an abstract base class for aggregate roots with a typed identifier.
     /// </summary>
     /// <typeparam name="TId">The type of the identifier.</typeparam>
-    public abstract class AggregateRoot<TId> : Entity<TId>
+    public abstract class AggregateRoot<TId> : Entity<TId>, IEventSourcing
         where TId : IComparable<TId>
     {
+        [NonSerialized]
+        private readonly List<DomainEvent> _events = [];
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AggregateRoot{TId}"/> class.
         /// </summary>
@@ -24,6 +30,30 @@ namespace Sculptor.Core
             : base(id)
         {
         }
+
+        /// <summary>
+        /// Adds a domain event for dispatching.
+        /// </summary>
+        /// <typeparam name="T">The type of the domain event being added.</typeparam>
+        /// <param name="event">The domain event instance to add to the collection.</param>
+        protected void AddEvent<T>(T @event) 
+            where T : DomainEvent
+        {
+            _events.Add(@event);
+        }
+
+        IReadOnlyCollection<DomainEvent> IEventSourcing.Events => _events;
+    }
+
+    /// <summary>
+    /// Represents an event sourcing mechanism that provides access to a collection of domain events.
+    /// </summary>
+    public interface IEventSourcing
+    {
+        /// <summary>
+        /// Retrieves a read-only collection of domain events associated with the current aggregate.
+        /// </summary>
+        IReadOnlyCollection<DomainEvent> Events { get; }
     }
 
     /// <summary>
