@@ -43,6 +43,8 @@ namespace Sculptor.Core
         }
 
         IReadOnlyCollection<DomainEvent> IEventSourcing.Events => _events;
+
+        object IEventSourcing.Id => Id;
     }
 
     /// <summary>
@@ -50,6 +52,11 @@ namespace Sculptor.Core
     /// </summary>
     public interface IEventSourcing
     {
+        /// <summary>
+        /// Gets the identifier of the entity.
+        /// </summary>
+        object Id { get; }
+
         /// <summary>
         /// Retrieves a read-only collection of domain events associated with the current aggregate.
         /// </summary>
