@@ -29,6 +29,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Sculptor.Core" Version="0.0.0-g0ee4796a47" />
+	  <ProjectReference Include="..\Sculptor.Core\Sculptor.Core.csproj" />
 	</ItemGroup>
+
+	<!--<ItemGroup>
+	  <PackageReference Include="Sculptor.Core" Version="0.0.0-g0ee4796a47" />
+	</ItemGroup>-->
 </Project>
