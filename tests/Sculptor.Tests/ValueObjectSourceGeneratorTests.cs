@@ -15,7 +15,8 @@ namespace Sculptor.Tests
 
                 public partial class Foo : ValueObject
                 {
-                    public int Bar { get; set; }
+                    public int Bar { get; set; }    
+                    public int Bar2 { get; set; }
                 }
                 """;
 
@@ -30,7 +31,8 @@ namespace Sculptor.Tests
                     {
                         protected override IEnumerable<object> GetEqualityParts()
                         {
-                            yield return this.Bar;
+                            yield return this.Bar;            
+                            yield return this.Bar2;
                         }
                     }
                 }
