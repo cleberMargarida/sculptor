@@ -15,8 +15,8 @@
 		<PackageProjectUrl>https://github.com/cleberMargarida/sculptor</PackageProjectUrl>
 		<DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
 		<Title>Sculptor.Orleans</Title>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<Version>1.0.2</Version>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -25,14 +25,10 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Orleans.Server" Version="[7.0.0,)" />
-		<PackageReference Include="Nerdbank.GitVersioning" Version="3.6.141">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Sculptor.Core" Version="1.0.1" />
+		<PackageReference Include="Sculptor.Core" Version="1.0.*" />
 	</ItemGroup>
 
 </Project>

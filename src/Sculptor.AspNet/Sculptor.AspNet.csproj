@@ -15,9 +15,9 @@
 		<PackageProjectUrl>https://github.com/cleberMargarida/sculptor</PackageProjectUrl>
 		<DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
 		<Title>Sculptor.AspNet</Title>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+		<Version>1.0.2</Version>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -29,6 +29,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Sculptor.Core" Version="1.0.1" />
+	  <PackageReference Include="Sculptor.Core" Version="1.0.*" />
 	</ItemGroup>
 </Project>

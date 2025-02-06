@@ -95,10 +95,22 @@ namespace Sculptor.Core
 
             sb.AppendLine("using Microsoft.Extensions.DependencyInjection;");
 
-            sb.AppendLine($$"""
+            if (model.ClassSymbol.IsGenericType)
+            {
+                string genericParams = $"<{string.Join(", ", model.ClassSymbol.TypeParameters)}>";
+
+                sb.AppendLine($$"""
+                namespace {{model.ClassSymbol.ContainingNamespace}} {
+                    public partial class {{model.ClassSymbol.Name}}{{genericParams}} {
+                """);
+            }
+            else
+            {
+                sb.AppendLine($$"""
                 namespace {{model.ClassSymbol.ContainingNamespace}} {
                     public partial class {{model.ClassSymbol.Name}} {
                 """);
+            }
 
             foreach (var method in model.Methods)
             {
