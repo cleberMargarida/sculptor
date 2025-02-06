@@ -32,7 +32,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Sculptor.Core\Sculptor.Core.csproj" OutputItemType="Analyzer" />
+		<PackageReference Include="Sculptor.Core" Version="1.0.1" />
 	</ItemGroup>
 
 </Project>
