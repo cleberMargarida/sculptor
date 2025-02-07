@@ -3,7 +3,9 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 
@@ -78,7 +80,17 @@ namespace Sculptor.Core
         private static string GenerateEqualityPartsImplementation(INamedTypeSymbol classSymbol)
         {
             var namespaceName = classSymbol.ContainingNamespace.ToDisplayString();
-            var className = classSymbol.Name;
+            string? className;
+            if (classSymbol.IsGenericType)
+            {
+                string genericParams = $"<{string.Join(", ", classSymbol.TypeArguments)}>";
+                className = $"{classSymbol.Name}{genericParams}";
+            }
+            else
+            {
+                className = classSymbol.Name;
+            }
+
             var symbols = new List<ISymbol>();
 
             var currentClass = classSymbol;
