@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Sculptor.AspNet\Sculptor.AspNet.csproj" />
     <ProjectReference Include="..\..\src\Sculptor.Core\Sculptor.Core.csproj" />
   </ItemGroup>
 

@@ -115,9 +115,7 @@ namespace Sculptor.Core
             foreach (var method in model.Methods)
             {
                 sb.AppendLine($$"""
-                            public {{(method.IsStatic ? "static " : string.Empty)}}{{method.ReturnType}} {{method.MethodName}}({{string.Join(", ", method.RequiredParameters)}}) {
-                                {{method.MethodName}}({{string.Join(", ", method.InnerParameters)}});
-                            }
+                            public {{(method.IsStatic ? "static " : string.Empty)}}{{method.ReturnType}} {{method.MethodName}}({{string.Join(", ", method.RequiredParameters)}}) => {{method.MethodName}}({{string.Join(", ", method.InnerParameters)}});
                     """);
             }
 
