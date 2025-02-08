@@ -17,6 +17,11 @@ namespace Sculptor.Core
         public bool IsSuccess { get; }
 
         /// <summary>
+        /// Gets a value indicating whether the operation failed.
+        /// </summary>
+        public bool IsFailed => !IsSuccess;
+
+        /// <summary>
         /// Gets the error message if the operation was not successful.
         /// </summary>
         public string? Error { get; }
@@ -136,6 +141,11 @@ namespace Sculptor.Core
         /// Gets a value indicating whether the operation was successful.
         /// </summary>
         public bool IsSuccess { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the operation failed.
+        /// </summary>
+        public bool IsFailed => !IsSuccess;
 
         /// <summary>
         /// Gets the error message if the operation was not successful.

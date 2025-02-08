@@ -115,7 +115,7 @@ namespace Sculptor.Core
             foreach (var method in model.Methods)
             {
                 sb.AppendLine($$"""
-                            public {{method.ReturnType}} {{method.MethodName}}({{string.Join(", ", method.RequiredParameters)}}) {
+                            public {{(method.IsStatic ? "static " : string.Empty)}}{{method.ReturnType}} {{method.MethodName}}({{string.Join(", ", method.RequiredParameters)}}) {
                                 {{method.MethodName}}({{string.Join(", ", method.InnerParameters)}});
                             }
                     """);
@@ -143,11 +143,13 @@ namespace Sculptor.Core
             public string MethodName { get; }
             public string ReturnType { get; }
             public bool HasFromServicesParameter { get; }
+            public bool IsStatic { get; }
             public ImmutableArray<string> RequiredParameters { get; }
             public ImmutableArray<string> InnerParameters { get; }
 
             public MethodModel(MethodDeclarationSyntax method, INamedTypeSymbol classSymbol)
             {
+                IsStatic = method.Modifiers.Any(SyntaxKind.StaticKeyword);
                 MethodName = method.Identifier.Text;
                 ReturnType = method.ReturnType.ToString();
 
@@ -168,7 +170,7 @@ namespace Sculptor.Core
                     else
                     {
                         defaultParameterCallsBuilder.Add(parameter.Identifier.Text);
-                        requiredParametersBuilder.Add($"{parameter.Type} {parameter.Identifier.Text}");
+                        requiredParametersBuilder.Add($"{parameter.Type} {parameter.Identifier.Text} {parameter.Default}");
                     }
                 }
 
