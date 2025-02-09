@@ -115,7 +115,7 @@ namespace Sculptor.Core
             foreach (var method in model.Methods)
             {
                 sb.AppendLine($$"""
-                            public {{(method.IsStatic ? "static " : string.Empty)}}{{method.ReturnType}} {{method.MethodName}}({{string.Join(", ", method.RequiredParameters)}}) => {{method.MethodName}}({{string.Join(", ", method.InnerParameters)}});
+                            public {{(method.IsOverride ? "override " : string.Empty)}}{{(method.IsStatic ? "static " : string.Empty)}}{{method.ReturnType}} {{method.MethodName}}({{string.Join(", ", method.RequiredParameters)}}) => {{method.MethodName}}({{string.Join(", ", method.InnerParameters)}});
                     """);
             }
 
@@ -142,12 +142,14 @@ namespace Sculptor.Core
             public string ReturnType { get; }
             public bool HasFromServicesParameter { get; }
             public bool IsStatic { get; }
+            public bool IsOverride { get; }
             public ImmutableArray<string> RequiredParameters { get; }
             public ImmutableArray<string> InnerParameters { get; }
 
             public MethodModel(MethodDeclarationSyntax method, INamedTypeSymbol classSymbol)
             {
                 IsStatic = method.Modifiers.Any(SyntaxKind.StaticKeyword);
+                IsOverride = method.Modifiers.Any(SyntaxKind.OverrideKeyword);
                 MethodName = method.Identifier.Text;
                 ReturnType = method.ReturnType.ToString();
 
