@@ -23,7 +23,7 @@ public class RichModelSourceGeneratorTests
             using Microsoft.Extensions.DependencyInjection;
             namespace <global namespace> {
                 public partial class Foo {
-                    public void DoSomething(ILogger<Foo> logger ) => DoSomething(Services.GetRequiredService<IDbConnection>(), logger);
+                    public void DoSomething(ILogger<Foo> logger) => DoSomething(Services.GetRequiredService<IDbConnection>(), logger);
                 }
             }
             
