@@ -13,7 +13,7 @@ namespace Sculptor.Core
         where TId : IComparable<TId>
     {
         [NonSerialized]
-        private readonly List<DomainEvent> _events = [];
+        private readonly List<IDomainEvent> _events = [];
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AggregateRoot{TId}"/> class.
@@ -37,12 +37,12 @@ namespace Sculptor.Core
         /// <typeparam name="T">The type of the domain event being added.</typeparam>
         /// <param name="event">The domain event instance to add to the collection.</param>
         protected void AddEvent<T>(T @event) 
-            where T : DomainEvent
+            where T : IDomainEvent
         {
             _events.Add(@event);
         }
 
-        IReadOnlyCollection<DomainEvent> IEventSourcing.Events => _events;
+        IReadOnlyCollection<IDomainEvent> IEventSourcing.Events => _events;
 
         object IEventSourcing.Id => Id;
     }
@@ -60,7 +60,7 @@ namespace Sculptor.Core
         /// <summary>
         /// Retrieves a read-only collection of domain events associated with the current aggregate.
         /// </summary>
-        IReadOnlyCollection<DomainEvent> Events { get; }
+        IReadOnlyCollection<IDomainEvent> Events { get; }
     }
 
     /// <summary>
