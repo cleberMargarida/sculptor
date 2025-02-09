@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
@@ -45,15 +46,60 @@ namespace Sculptor.Core
                 return null;
             }
 
-            var methods = classDecl.Members
-                .OfType<MethodDeclarationSyntax>()
-                .Select(method => new MethodModel(method, classSymbol))
-                .Where(m => m.HasFromServicesParameter)
-                .ToImmutableArray();
+            var hasFromServicesAttributes = false;
+            var methods = new List<MethodDeclarationSyntax>();
 
-            return methods.Length > 0 ? new ClassModel(classSymbol, methods) : null;
+            foreach (var method in classDecl.Members.OfType<MethodDeclarationSyntax>())
+            {
+                var newMethod = method;
+                var parameterList = newMethod.ParameterList;
+                var argumentList = SyntaxFactory.ArgumentList(
+                    SyntaxFactory.SeparatedList(
+                        parameterList.Parameters.Select(param =>
+                        {
+                            if (param.AttributeLists.SelectMany(a => a.Attributes).Any(a => a.Name.ToString() == "FromServices"))
+                            {
+                                hasFromServicesAttributes = true;
+                                newMethod = newMethod.RemoveNode(param, SyntaxRemoveOptions.KeepLeadingTrivia);
+                                return SyntaxFactory.Argument(
+                                    SyntaxFactory.InvocationExpression(
+                                        SyntaxFactory.MemberAccessExpression(
+                                            SyntaxKind.SimpleMemberAccessExpression,
+                                            SyntaxFactory.IdentifierName("Services"),
+                                            SyntaxFactory.GenericName("GetRequiredService")
+                                                .WithTypeArgumentList(
+                                                    SyntaxFactory.TypeArgumentList(
+                                                        SyntaxFactory.SingletonSeparatedList(param.Type!)
+                                                    )
+                                                )
+                                        )
+                                    )
+                                );
+                            }
+                            return SyntaxFactory.Argument(SyntaxFactory.IdentifierName(param.Identifier));
+                        })
+                    )
+                ).NormalizeWhitespace("", eol: " ");
+
+                if (!hasFromServicesAttributes)
+                {
+                    return new ClassModel(classSymbol, ImmutableArray<MethodDeclarationSyntax>.Empty);
+                }
+
+                newMethod = newMethod.WithBody(null).WithExpressionBody(
+                    SyntaxFactory.ArrowExpressionClause(
+                        SyntaxFactory.InvocationExpression(
+                            SyntaxFactory.IdentifierName(newMethod.Identifier)
+                        ).WithArgumentList(argumentList)
+                    ))
+                    .WithSemicolonToken(SyntaxFactory.Token(SyntaxKind.SemicolonToken))
+                    .NormalizeWhitespace("", eol: " ");
+
+                methods.Add(newMethod);
+            }
+
+            return new ClassModel(classSymbol, methods.ToImmutableArray());
         }
-
         private static bool InheritsFromRichModel(INamedTypeSymbol classSymbol)
         {
             INamedTypeSymbol? baseType = classSymbol.BaseType;
@@ -115,7 +161,7 @@ namespace Sculptor.Core
             foreach (var method in model.Methods)
             {
                 sb.AppendLine($$"""
-                            public {{(method.IsOverride ? "override " : string.Empty)}}{{(method.IsStatic ? "static " : string.Empty)}}{{method.ReturnType}} {{method.MethodName}}({{string.Join(", ", method.RequiredParameters)}}) => {{method.MethodName}}({{string.Join(", ", method.InnerParameters)}});
+                            {{string.Join("\t\t", method.ToString().Split('\n'))}}
                     """);
             }
 
@@ -129,62 +175,10 @@ namespace Sculptor.Core
         }
 
         [DebuggerDisplay("{ClassSymbol}")]
-        private class ClassModel(INamedTypeSymbol classSymbol, ImmutableArray<MethodModel> methods)
+        private class ClassModel(INamedTypeSymbol classSymbol, ImmutableArray<MethodDeclarationSyntax> methods)
         {
             public INamedTypeSymbol ClassSymbol { get; } = classSymbol;
-            public ImmutableArray<MethodModel> Methods { get; } = methods;
-        }
-
-        [DebuggerDisplay("{MethodName}")]
-        private record MethodModel
-        {
-            public string MethodName { get; }
-            public string ReturnType { get; }
-            public bool HasFromServicesParameter { get; }
-            public bool IsStatic { get; }
-            public bool IsOverride { get; }
-            public ImmutableArray<string> RequiredParameters { get; }
-            public ImmutableArray<string> InnerParameters { get; }
-
-            public MethodModel(MethodDeclarationSyntax method, INamedTypeSymbol classSymbol)
-            {
-                IsStatic = method.Modifiers.Any(SyntaxKind.StaticKeyword);
-                IsOverride = method.Modifiers.Any(SyntaxKind.OverrideKeyword);
-                MethodName = method.Identifier.Text;
-                ReturnType = method.ReturnType.ToString();
-
-                var parameters = method.ParameterList.Parameters;
-
-                HasFromServicesParameter = false;
-
-                var defaultParameterCallsBuilder = ImmutableArray.CreateBuilder<string>();
-                var requiredParametersBuilder = ImmutableArray.CreateBuilder<string>();
-
-                foreach (var parameter in parameters)
-                {
-                    if (HasFromServicesAttribute(parameter))
-                    {
-                        HasFromServicesParameter = true;
-                        defaultParameterCallsBuilder.Add($"Services.GetRequiredService<{parameter.Type}>()");
-                    }
-                    else
-                    {
-                        defaultParameterCallsBuilder.Add(parameter.Identifier.Text);
-                        requiredParametersBuilder.Add($"{parameter.Type} {parameter.Identifier.Text} {parameter.Default}");
-                    }
-                }
-
-                InnerParameters = defaultParameterCallsBuilder.ToImmutable();
-                RequiredParameters = requiredParametersBuilder.ToImmutable();
-            }
-
-
-            private static bool HasFromServicesAttribute(ParameterSyntax parameter)
-            {
-                return parameter.AttributeLists
-                    .SelectMany(a => a.Attributes)
-                    .Any(a => a.Name.ToString() == "FromServices");
-            }
+            public ImmutableArray<MethodDeclarationSyntax> Methods { get; } = methods;
         }
     }
 }
