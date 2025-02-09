@@ -16,7 +16,7 @@
 		<DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
 		<Title>Sculptor.Orleans</Title>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<Version>1.0.8</Version>
+		<Version>1.0.9</Version>
 	</PropertyGroup>
 
 	<PropertyGroup>

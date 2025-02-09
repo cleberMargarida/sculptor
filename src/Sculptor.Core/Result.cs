@@ -92,6 +92,17 @@ namespace Sculptor.Core
         }
 
         /// <summary>
+        /// Wraps a result of type <typeparamref name="T"/> into a non-generic result.
+        /// </summary>
+        /// <typeparam name="T">The type of the value.</typeparam>
+        /// <param name="result">The result to wrap.</param>
+        /// <returns>A non-generic result.</returns>
+        public static Result Wrap<T>(Result result)
+        {
+            return new(result.IsSuccess, result.Error, result.value);
+        }
+
+        /// <summary>
         /// Creates a new result with an additional error message.
         /// </summary>
         /// <param name="error">The additional error message.</param>
