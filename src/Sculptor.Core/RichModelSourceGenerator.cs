@@ -33,7 +33,20 @@ namespace Sculptor.Core
 
         private static bool IsCandidateClass(SyntaxNode node)
         {
-            return node is ClassDeclarationSyntax classDecl && classDecl.BaseList != null;
+            if (!(node is ClassDeclarationSyntax classDecl && classDecl.BaseList != null))
+            {
+                return false;
+            }
+
+            foreach (var method in classDecl.Members.OfType<MethodDeclarationSyntax>())
+            {
+                if (method.ParameterList.Parameters.Any(param => param.AttributeLists.SelectMany(a => a.Attributes).Any(a => a.Name.ToString() == "FromServices")))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static ClassModel? GetClassWithMethods(GeneratorSyntaxContext context)
@@ -100,6 +113,7 @@ namespace Sculptor.Core
 
             return new ClassModel(classSymbol, methods.ToImmutableArray());
         }
+
         private static bool InheritsFromRichModel(INamedTypeSymbol classSymbol)
         {
             INamedTypeSymbol? baseType = classSymbol.BaseType;
@@ -121,6 +135,7 @@ namespace Sculptor.Core
 
         private static string GeneratePartialClass(ClassModel model)
         {
+            //Debugger.Launch();
             var sb = new StringBuilder();
 
             var usingDirectives = model.ClassSymbol.DeclaringSyntaxReferences
