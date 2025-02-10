@@ -52,9 +52,17 @@ namespace Sculptor.Core
             foreach (var method in classDecl.Members.OfType<MethodDeclarationSyntax>())
             {
                 var newMethod = method;
+
+                var methodAsync = newMethod.Modifiers.FirstOrDefault(m => m.IsKind(SyntaxKind.AsyncKeyword));
+
+                if (methodAsync != null)
+                {
+                    newMethod = newMethod.WithModifiers(newMethod.Modifiers.Remove(methodAsync));
+                }
+
                 var parameterList = newMethod.ParameterList;
 
-                if (!parameterList.Parameters.Any(param => param.AttributeLists.SelectMany(a => a.Attributes).Any(a => a.Name.ToString() == "FromServices"))) 
+                if (!parameterList.Parameters.Any(param => param.AttributeLists.SelectMany(a => a.Attributes).Any(a => a.Name.ToString() == "FromServices")))
                 {
                     continue;
                 }
@@ -89,7 +97,7 @@ namespace Sculptor.Core
 
                 if (!classHasFromServicesAttributes)
                 {
-                    return null;               
+                    return null;
                 }
 
                 newMethod = newMethod.WithBody(null).WithExpressionBody(
