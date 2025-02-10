@@ -33,20 +33,7 @@ namespace Sculptor.Core
 
         private static bool IsCandidateClass(SyntaxNode node)
         {
-            if (!(node is ClassDeclarationSyntax classDecl && classDecl.BaseList != null))
-            {
-                return false;
-            }
-
-            foreach (var method in classDecl.Members.OfType<MethodDeclarationSyntax>())
-            {
-                if (method.ParameterList.Parameters.Any(param => param.AttributeLists.SelectMany(a => a.Attributes).Any(a => a.Name.ToString() == "FromServices")))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return node is ClassDeclarationSyntax classDecl && classDecl.BaseList != null;
         }
 
         private static ClassModel? GetClassWithMethods(GeneratorSyntaxContext context)
@@ -59,20 +46,26 @@ namespace Sculptor.Core
                 return null;
             }
 
-            var hasFromServicesAttributes = false;
+            var classHasFromServicesAttributes = false;
             var methods = new List<MethodDeclarationSyntax>();
 
             foreach (var method in classDecl.Members.OfType<MethodDeclarationSyntax>())
             {
                 var newMethod = method;
                 var parameterList = newMethod.ParameterList;
+
+                if (!parameterList.Parameters.Any(param => param.AttributeLists.SelectMany(a => a.Attributes).Any(a => a.Name.ToString() == "FromServices"))) 
+                {
+                    continue;
+                }
+
                 var argumentList = SyntaxFactory.ArgumentList(
                     SyntaxFactory.SeparatedList(
                         parameterList.Parameters.Select(param =>
                         {
                             if (param.AttributeLists.SelectMany(a => a.Attributes).Any(a => a.Name.ToString() == "FromServices"))
                             {
-                                hasFromServicesAttributes = true;
+                                classHasFromServicesAttributes = true;
                                 newMethod = newMethod.RemoveNode(param, SyntaxRemoveOptions.KeepLeadingTrivia);
                                 return SyntaxFactory.Argument(
                                     SyntaxFactory.InvocationExpression(
@@ -94,9 +87,9 @@ namespace Sculptor.Core
                     )
                 ).NormalizeWhitespace("", eol: " ");
 
-                if (!hasFromServicesAttributes)
+                if (!classHasFromServicesAttributes)
                 {
-                    return new ClassModel(classSymbol, ImmutableArray<MethodDeclarationSyntax>.Empty);
+                    return null;               
                 }
 
                 newMethod = newMethod.WithBody(null).WithExpressionBody(
@@ -176,7 +169,7 @@ namespace Sculptor.Core
             foreach (var method in model.Methods)
             {
                 sb.AppendLine($$"""
-                            {{string.Join("\t\t", method.ToString().Split('\n'))}}
+                            {{string.Join("\t\t", method.ToFullString().Split('\n'))}}
                     """);
             }
 
