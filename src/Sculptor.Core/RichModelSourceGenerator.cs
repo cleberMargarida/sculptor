@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -33,7 +34,7 @@ namespace Sculptor.Core
 
         private static bool IsCandidateClass(SyntaxNode node)
         {
-            return node is ClassDeclarationSyntax classDecl && classDecl.BaseList != null;
+            return node is ClassDeclarationSyntax classDecl && classDecl.BaseList != null && classDecl.Members.OfType<MethodDeclarationSyntax>().Any(m => m.ParameterList.Parameters.Any(param => param.AttributeLists.SelectMany(a => a.Attributes).Any(a => a.Name.ToString() == "FromServices")));
         }
 
         private static ClassModel? GetClassWithMethods(GeneratorSyntaxContext context)
@@ -59,6 +60,8 @@ namespace Sculptor.Core
                 {
                     newMethod = newMethod.WithModifiers(newMethod.Modifiers.Remove(methodAsync));
                 }
+                
+                var methodAbstract = newMethod.Modifiers.FirstOrDefault(m => m.IsKind(SyntaxKind.AbstractKeyword));
 
                 var parameterList = newMethod.ParameterList;
 
@@ -67,45 +70,49 @@ namespace Sculptor.Core
                     continue;
                 }
 
-                var argumentList = SyntaxFactory.ArgumentList(
-                    SyntaxFactory.SeparatedList(
-                        parameterList.Parameters.Select(param =>
-                        {
-                            if (param.AttributeLists.SelectMany(a => a.Attributes).Any(a => a.Name.ToString() == "FromServices"))
-                            {
-                                classHasFromServicesAttributes = true;
-                                newMethod = newMethod.RemoveNode(param, SyntaxRemoveOptions.KeepLeadingTrivia);
-                                return SyntaxFactory.Argument(
-                                    SyntaxFactory.InvocationExpression(
-                                        SyntaxFactory.MemberAccessExpression(
-                                            SyntaxKind.SimpleMemberAccessExpression,
-                                            SyntaxFactory.IdentifierName("Services"),
-                                            SyntaxFactory.GenericName("GetRequiredService")
-                                                .WithTypeArgumentList(
-                                                    SyntaxFactory.TypeArgumentList(
-                                                        SyntaxFactory.SingletonSeparatedList(param.Type!)
-                                                    )
-                                                )
-                                        )
-                                    )
-                                );
-                            }
-                            return SyntaxFactory.Argument(SyntaxFactory.IdentifierName(param.Identifier));
-                        })
-                    )
-                ).NormalizeWhitespace("", eol: " ");
+                var nodes = parameterList.Parameters.Select(param =>
+                {
+                    bool hasFromServicesAttribute = param.AttributeLists
+                        .SelectMany(a => a.Attributes)
+                        .Any(a => a.Name.ToString().Equals("FromServices", StringComparison.OrdinalIgnoreCase));
+
+                    if (!hasFromServicesAttribute)
+                    {
+                        return SyntaxFactory.Argument(SyntaxFactory.IdentifierName(param.Identifier));
+                    }
+
+                    classHasFromServicesAttributes = true;
+
+                    newMethod = newMethod.RemoveNode(param, SyntaxRemoveOptions.KeepLeadingTrivia);
+
+                    var typeArguments = SyntaxFactory.SingletonSeparatedList(param.Type!);
+                    var genericName = SyntaxFactory.GenericName("GetRequiredService").WithTypeArgumentList(SyntaxFactory.TypeArgumentList(typeArguments));
+                    var memberAccessExpression = SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, SyntaxFactory.IdentifierName("Services"), genericName);
+                    var invocationExpression = SyntaxFactory.InvocationExpression(memberAccessExpression);
+
+                    return SyntaxFactory.Argument(invocationExpression);
+                });
+
+                var arguments = SyntaxFactory.SeparatedList(nodes);
+                var argumentList = SyntaxFactory.ArgumentList(arguments).NormalizeWhitespace("", eol: " ");
 
                 if (!classHasFromServicesAttributes)
                 {
                     return null;
                 }
 
-                newMethod = newMethod.WithBody(null).WithExpressionBody(
-                    SyntaxFactory.ArrowExpressionClause(
-                        SyntaxFactory.InvocationExpression(
-                            SyntaxFactory.IdentifierName(newMethod.Identifier)
-                        ).WithArgumentList(argumentList)
-                    ))
+                if (methodAbstract != default)
+                {
+                    methods.Add(newMethod);
+                    continue;
+                }
+
+                var methodWithoutBody = newMethod.WithBody(null);
+                var methodNameIdentifier = SyntaxFactory.IdentifierName(newMethod.Identifier);
+                var methodInvocation = SyntaxFactory.InvocationExpression(methodNameIdentifier).WithArgumentList(argumentList);
+                var arrowExpressionBody = SyntaxFactory.ArrowExpressionClause(methodInvocation);
+
+                newMethod = methodWithoutBody.WithExpressionBody(arrowExpressionBody)
                     .WithSemicolonToken(SyntaxFactory.Token(SyntaxKind.SemicolonToken))
                     .NormalizeWhitespace("", eol: " ");
 
@@ -136,7 +143,6 @@ namespace Sculptor.Core
 
         private static string GeneratePartialClass(ClassModel model)
         {
-            //Debugger.Launch();
             var sb = new StringBuilder();
 
             var usingDirectives = model.ClassSymbol.DeclaringSyntaxReferences
