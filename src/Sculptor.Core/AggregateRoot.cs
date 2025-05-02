@@ -42,6 +42,11 @@ namespace Sculptor.Core
             _events.Add(@event);
         }
 
+        void IEventSourcing.ConfirmDispatchedEvents()
+        {
+            _events.Clear();
+        }
+
         IReadOnlyCollection<IDomainEvent> IEventSourcing.Events => _events;
 
         object IEventSourcing.Id => Id;
@@ -61,6 +66,11 @@ namespace Sculptor.Core
         /// Retrieves a read-only collection of domain events associated with the current aggregate.
         /// </summary>
         IReadOnlyCollection<IDomainEvent> Events { get; }
+
+        /// <summary>  
+        /// Confirms that all domain events have been dispatched and clears the event collection.  
+        /// </summary>  
+        void ConfirmDispatchedEvents();
     }
 
     /// <summary>
