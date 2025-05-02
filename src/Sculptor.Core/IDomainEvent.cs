@@ -7,5 +7,6 @@ namespace Sculptor.Core
     /// </summary>
     public interface IDomainEvent
     {
+        public DateTime Timestamp { get; set; }
     }
 }
