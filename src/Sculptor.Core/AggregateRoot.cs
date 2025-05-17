@@ -36,7 +36,7 @@ namespace Sculptor.Core
         /// </summary>
         /// <typeparam name="T">The type of the domain event being added.</typeparam>
         /// <param name="event">The domain event instance to add to the collection.</param>
-        protected void RaiseEvent<T>(T @event) 
+        protected void RaiseDomainEvent<T>(T @event) 
             where T : IDomainEvent
         {
             _events.Add(@event);
