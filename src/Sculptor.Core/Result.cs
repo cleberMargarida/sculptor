@@ -72,7 +72,7 @@ public readonly struct Result : IResult
     /// Creates a successful result.
     /// </summary>
     /// <returns>A successful result.</returns>
-    public static IResult Ok()
+    public static Result Ok()
     {
         return new Result(true, null);
     }
@@ -83,7 +83,7 @@ public readonly struct Result : IResult
     /// <typeparam name="T">The type of the value.</typeparam>
     /// <param name="value">The value.</param>
     /// <returns>A successful result with a value.</returns>
-    public static IResult<T> Ok<T>(T value)
+    public static Result<T> Ok<T>(T value)
     {
         return new Result<T>(true, null, value);
     }
@@ -93,7 +93,7 @@ public readonly struct Result : IResult
     /// </summary>
     /// <param name="error">The error message.</param>
     /// <returns>A failed result.</returns>
-    public static IResult Fail(string error)
+    public static Result Fail(string error)
     {
         return new Result(false, error);
     }
@@ -104,7 +104,7 @@ public readonly struct Result : IResult
     /// <typeparam name="T">The type of the value.</typeparam>
     /// <param name="error">The error message.</param>
     /// <returns>A failed result.</returns>
-    public static IResult<T> Fail<T>(string error)
+    public static Result<T> Fail<T>(string error)
     {
         return new Result<T>(false, error, default);
     }
@@ -159,7 +159,7 @@ public readonly struct Result<T> : IResult<T>
     /// </summary>
     /// <param name="value">The value.</param>
     /// <returns>A successful result with a value.</returns>
-    public static IResult<T> Ok(T value)
+    public static Result<T> Ok(T value)
     {
         return new Result<T>(true, null, value);
     }
@@ -169,7 +169,7 @@ public readonly struct Result<T> : IResult<T>
     /// </summary>
     /// <param name="error">The error message.</param>
     /// <returns>A failed result with a value.</returns>
-    public static IResult<T> Fail(string error)
+    public static Result<T> Fail(string error)
     {
         return new Result<T>(false, error, default);
     }
@@ -209,7 +209,7 @@ public static class ResultExtensions
     /// <param name="result">The original result.</param>
     /// <param name="newValue">The new value.</param>
     /// <returns>A new result with the new value.</returns>
-    public static IResult WithValue(this IResult result, object? newValue)
+    public static Result WithValue(this IResult result, object? newValue)
     {
         return new Result(result.IsSuccess, result.Error, newValue);
     }
@@ -221,7 +221,7 @@ public static class ResultExtensions
     /// <param name="result">The original result.</param>
     /// <param name="error">The additional error message.</param>
     /// <returns>A new result with the combined error messages.</returns>
-    public static IResult<T> WithError<T>(this IResult<T> result, string error)
+    public static Result<T> WithError<T>(this IResult<T> result, string error)
     {
         return new Result<T>(false, Result.CombineErrors(result.Error, error), default);
     }
@@ -233,7 +233,7 @@ public static class ResultExtensions
     /// <param name="result">The original result.</param>
     /// <param name="newValue">The new value.</param>
     /// <returns>A new result with the new value.</returns>
-    public static IResult<T> WithValue<T>(this IResult<T> result, T? newValue)
+    public static Result<T> WithValue<T>(this IResult<T> result, T? newValue)
     {
         return new Result<T>(result.IsSuccess, result.Error, newValue);
     }
