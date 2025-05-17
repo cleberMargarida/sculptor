@@ -173,6 +173,25 @@ public readonly struct Result<T> : IResult<T>
     {
         return new Result<T>(false, error, default);
     }
+
+    /// <summary>
+    /// Implicitly converts a result of type <typeparamref name="T"/> to a non-generic result.
+    /// </summary>
+    /// <param name="result">The result to convert.</param>
+    public static implicit operator Result(Result<T> result)
+    {
+        return new(result.IsSuccess, result.Error, result.Value);
+    }
+
+    /// <summary>
+    /// Implicitly converts a non-generic result to a result of type <typeparamref name="T"/>.
+    /// </summary>
+    /// <param name="result">The result to convert.</param>
+    public static implicit operator Result<T>(Result result)
+    {
+        return new(result.IsSuccess, result.Error, (T?)result.value);
+    }
+
 }
 
 /// <summary>
